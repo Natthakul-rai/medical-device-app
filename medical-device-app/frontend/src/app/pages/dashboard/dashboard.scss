@@ -1,29 +1,13 @@
 .dashboard-container {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h2 {
-    margin: 0 0 0.25rem 0;
-  }
-
-  button {
-    text-transform: none;
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
+  flex-direction: column;
+  gap: var(--page-gap);
 }
 
 .summary-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(0.9rem, 1.5vw, 1.5rem);
 }
 
 .summary-card {
@@ -31,39 +15,56 @@
   align-items: center;
   gap: 1rem;
   padding: 1.5rem;
+  border-radius: calc(var(--surface-radius) - 2px);
+  position: relative;
+  overflow: hidden;
+  color: #0d1a33;
+  background: color-mix(in srgb, var(--accent-color) 10%, #fafdff);
+  border: 1px solid color-mix(in srgb, var(--accent-color) 18%, rgba(13, 71, 161, 0.18));
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.6;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0));
+    pointer-events: none;
+  }
 
   h3 {
     margin: 0;
-    font-size: 1.75rem;
+    font-size: clamp(1.6rem, 3vw, 2rem);
     font-weight: 600;
+    text-align: center;
   }
 
   p {
     margin: 0;
-    color: rgba(0, 0, 0, 0.54);
+    color: rgba(0, 0, 0, 0.6);
   }
 }
 
 .summary-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--accent-color) 18%, white);
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--accent-color) 25%, #ffffff);
   color: var(--accent-color);
   display: grid;
   place-items: center;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  box-shadow: 0 10px 24px rgba(13, 71, 161, 0.18);
 }
 
 .content-grid {
   display: grid;
-  gap: 1.5rem;
-  grid-template-columns: 2.1fr 1fr;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
 }
 
 .chart-card,
 .alerts-card {
-  padding: 1.5rem;
+  padding: clamp(1.25rem, 2vw, 1.75rem);
 }
 
 .chart-header,
@@ -71,43 +72,45 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.75rem;
   margin-bottom: 1rem;
 
   h3 {
     margin: 0;
+    font-weight: 600;
   }
 }
 
 .chart-body {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
+  gap: 2rem;
   align-items: center;
 }
 
 .pie {
-  width: 220px;
-  height: 220px;
+  width: clamp(200px, 26vw, 240px);
+  aspect-ratio: 1;
   border-radius: 50%;
   background-image: radial-gradient(circle at center, #ffffff 0%, #ffffff 45%, transparent 46%),
     var(--pie-gradient);
   display: grid;
   place-items: center;
-  box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 0 0 12px rgba(255, 255, 255, 0.75);
 }
 
 .pie-center {
-  width: 120px;
-  height: 120px;
+  width: clamp(110px, 14vw, 132px);
+  aspect-ratio: 1;
   border-radius: 50%;
   background: #ffffff;
   display: grid;
   place-items: center;
   text-align: center;
-  box-shadow: 0 12px 20px rgba(15, 76, 129, 0.1);
+  box-shadow: 0 14px 32px rgba(15, 76, 129, 0.12);
 
   .total {
-    font-size: 1.75rem;
+    font-size: clamp(1.5rem, 3vw, 2rem);
     font-weight: 600;
   }
 
@@ -119,7 +122,7 @@
 
 .legend {
   display: grid;
-  gap: 0.75rem;
+  gap: 0.85rem;
   min-width: 220px;
 }
 
@@ -137,8 +140,8 @@
 .marker {
   width: 14px;
   height: 14px;
-  border-radius: 4px;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.08);
 }
 
 .badge {
@@ -147,8 +150,8 @@
   justify-content: center;
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  background: rgba(21, 101, 192, 0.15);
-  color: #1565c0;
+  background: rgba(21, 101, 192, 0.18);
+  color: #0d47a1;
   font-weight: 600;
 }
 
@@ -172,13 +175,7 @@ mat-list-item {
     padding: 1.25rem;
   }
 
-  .pie {
-    width: 180px;
-    height: 180px;
-  }
-
-  .pie-center {
-    width: 100px;
-    height: 100px;
+  .legend {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   }
 }

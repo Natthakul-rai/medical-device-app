@@ -1,16 +1,18 @@
-<div class="documents-container">
-  <div class="header">
+<div class="documents-container page-shell">
+  <div class="section-header">
     <div>
       <h2>การจัดการเอกสาร</h2>
-      <p class="text-muted">จัดเก็บและติดตามไฟล์เอกสารของเครื่องมือแพทย์</p>
+      <p class="section-lead">จัดเก็บและติดตามไฟล์เอกสารของเครื่องมือแพทย์</p>
     </div>
-    <button mat-flat-button color="primary" (click)="openUpload()">
-      <mat-icon>cloud_upload</mat-icon>
-      อัปโหลด PDF
-    </button>
+    <div class="section-actions">
+      <button mat-flat-button color="primary" class="cta" (click)="openUpload()">
+        <mat-icon>cloud_upload</mat-icon>
+        อัปโหลด PDF
+      </button>
+    </div>
   </div>
 
-  <div class="filters" [formGroup]="filterGroup">
+  <div class="filters surface-card" [formGroup]="filterGroup">
     <mat-form-field appearance="outline">
       <mat-label>ค้นหาเอกสาร</mat-label>
       <input matInput formControlName="search" placeholder="ชื่อเครื่องมือหรือประเภทเอกสาร" />
@@ -26,7 +28,7 @@
     </mat-form-field>
   </div>
 
-  <div class="table-wrapper">
+  <div class="table-wrapper surface-table">
     <table mat-table [dataSource]="filteredDocuments()">
       <ng-container matColumnDef="device">
         <th mat-header-cell *matHeaderCellDef>เครื่องมือแพทย์</th>

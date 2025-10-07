@@ -1,16 +1,18 @@
-<div class="users-container">
-  <div class="header">
+<div class="users-container page-shell">
+  <div class="section-header">
     <div>
       <h2>การจัดการผู้ใช้งาน</h2>
-      <p class="text-muted">ดูและอัปเดตสิทธิ์การใช้งานของทีมงาน</p>
+      <p class="section-lead">ดูและอัปเดตสิทธิ์การใช้งานของทีมงาน</p>
     </div>
-    <button mat-flat-button color="primary" (click)="openCreate()">
-      <mat-icon>person_add</mat-icon>
-      เพิ่มผู้ใช้ใหม่
-    </button>
+    <div class="section-actions">
+      <button mat-flat-button color="primary" class="cta" (click)="openCreate()">
+        <mat-icon>person_add</mat-icon>
+        เพิ่มผู้ใช้ใหม่
+      </button>
+    </div>
   </div>
 
-  <div class="filters" [formGroup]="filterGroup">
+  <div class="filters surface-card" [formGroup]="filterGroup">
     <mat-form-field appearance="outline">
       <mat-label>ค้นหาผู้ใช้</mat-label>
       <input matInput formControlName="search" placeholder="ชื่อหรืออีเมล" />
@@ -26,7 +28,7 @@
     </mat-form-field>
   </div>
 
-  <div class="table-wrapper">
+  <div class="table-wrapper surface-table">
     <table mat-table [dataSource]="filteredUsers()" [trackBy]="trackById">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>ชื่อผู้ใช้</th>

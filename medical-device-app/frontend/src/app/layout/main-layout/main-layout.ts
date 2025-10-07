@@ -46,10 +46,30 @@ export class MainLayoutComponent {
   protected readonly userName = computed(() => this.authService.user()?.name ?? 'Admin');
 
   protected readonly navItems = [
-    { icon: 'space_dashboard', label: 'Dashboard', route: '/dashboard' },
-    { icon: 'medical_services', label: 'Devices', route: '/devices' },
-    { icon: 'people', label: 'Users', route: '/users' },
-    { icon: 'description', label: 'Documents', route: '/documents' },
+    {
+      icon: 'space_dashboard',
+      label: 'Dashboard',
+      description: 'ภาพรวมสถานะเครื่องมือ',
+      route: '/dashboard',
+    },
+    {
+      icon: 'medical_services',
+      label: 'Devices',
+      description: 'จัดการข้อมูลเครื่องมือแพทย์',
+      route: '/devices',
+    },
+    {
+      icon: 'people',
+      label: 'Users',
+      description: 'สิทธิ์และข้อมูลผู้ใช้งาน',
+      route: '/users',
+    },
+    {
+      icon: 'description',
+      label: 'Documents',
+      description: 'ไฟล์สอบเทียบและเอกสาร',
+      route: '/documents',
+    },
   ];
 
   logout(): void {

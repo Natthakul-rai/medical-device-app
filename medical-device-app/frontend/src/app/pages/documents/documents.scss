@@ -1,30 +1,25 @@
 .documents-container {
-  display: grid;
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
+.section-actions .cta {
+  display: inline-flex;
   align-items: center;
-
-  h2 {
-    margin: 0 0 0.25rem 0;
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-transform: none;
-    font-weight: 600;
-  }
+  gap: 0.5rem;
+  text-transform: none;
+  font-weight: 600;
+  padding-inline: 1.25rem;
+  min-height: 44px;
+  box-shadow: 0 12px 24px rgba(13, 71, 161, 0.16);
 }
 
 .filters {
   display: grid;
-  gap: 1rem;
   grid-template-columns: minmax(240px, 1fr) minmax(200px, 220px);
+  gap: 1rem;
+  padding: 1.2rem;
 
   mat-form-field {
     width: 100%;
@@ -32,24 +27,27 @@
 }
 
 .table-wrapper {
-  background: #fff;
-  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 12px 32px rgba(13, 71, 161, 0.08);
 }
 
 table {
   width: 100%;
 
+  thead {
+    background: rgba(13, 71, 161, 0.04);
+  }
+
   th {
     font-weight: 600;
     color: rgba(0, 0, 0, 0.6);
-    background: rgba(13, 71, 161, 0.04);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.06rem;
   }
 
   th,
   td {
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     vertical-align: middle;
   }
 }
@@ -59,7 +57,7 @@ table {
 }
 
 .file-name {
-  color: rgba(0, 0, 0, 0.54);
+  color: rgba(0, 0, 0, 0.52);
   font-size: 0.85rem;
 }
 
@@ -76,9 +74,9 @@ table {
 .actions {
   white-space: nowrap;
   text-align: right;
-  button + button {
-    margin-left: 0.35rem;
-  }
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.4rem;
 }
 
 tr.empty td {
@@ -99,19 +97,22 @@ tr.empty td {
 
 @media (max-width: 960px) {
   .filters {
-    grid-template-columns: 1fr;
-  }
-
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
 @media (max-width: 720px) {
   table th,
   table td {
-    padding: 0.75rem;
+    padding: 0.85rem;
+  }
+
+  .section-actions {
+    width: 100%;
+
+    .cta {
+      width: 100%;
+      justify-content: center;
+    }
   }
 }

@@ -20,22 +20,22 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        title: 'แดชบอร์ด | Medical Device Management',
+        title: 'แดชบอร์ด | BIDI Medical Device Management',
         loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.DashboardComponent),
       },
       {
         path: 'devices',
-        title: 'เครื่องมือแพทย์ | Medical Device Management',
+        title: 'เครื่องมือแพทย์ | BIDI Medical Device Management',
         loadComponent: () => import('./pages/devices/devices').then((m) => m.DevicesComponent),
       },
       {
         path: 'users',
-        title: 'ผู้ใช้งาน | Medical Device Management',
+        title: 'ผู้ใช้งาน | BIDI Medical Device Management',
         loadComponent: () => import('./pages/users/users').then((m) => m.UsersComponent),
       },
       {
         path: 'documents',
-        title: 'เอกสาร | Medical Device Management',
+        title: 'เอกสาร | BIDI Medical Device Management',
         loadComponent: () => import('./pages/documents/documents').then((m) => m.DocumentsComponent),
       },
     ],

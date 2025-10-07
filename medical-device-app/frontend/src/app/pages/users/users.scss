@@ -1,30 +1,25 @@
 .users-container {
-  display: grid;
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--page-gap);
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
+.section-actions .cta {
+  display: inline-flex;
   align-items: center;
-
-  h2 {
-    margin: 0 0 0.25rem 0;
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-transform: none;
-    font-weight: 600;
-  }
+  gap: 0.5rem;
+  text-transform: none;
+  font-weight: 600;
+  padding-inline: 1.35rem;
+  min-height: 44px;
+  box-shadow: 0 12px 24px rgba(13, 71, 161, 0.18);
 }
 
 .filters {
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
-  grid-template-columns: minmax(240px, 1fr) minmax(180px, 220px);
+  padding: 1.2rem;
 
   mat-form-field {
     width: 100%;
@@ -32,24 +27,27 @@
 }
 
 .table-wrapper {
-  background: #fff;
-  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 12px 32px rgba(13, 71, 161, 0.08);
 }
 
 table {
   width: 100%;
 
+  thead {
+    background: rgba(13, 71, 161, 0.04);
+  }
+
   th {
     font-weight: 600;
-    color: rgba(0, 0, 0, 0.6);
-    background: rgba(13, 71, 161, 0.04);
+    color: rgba(0, 0, 0, 0.62);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.06rem;
   }
 
   th,
   td {
-    padding: 1rem;
+    padding: 1rem 1.25rem;
     vertical-align: middle;
   }
 }
@@ -62,28 +60,29 @@ table {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  padding: 0.25rem 0.75rem;
+  padding: 0.28rem 0.75rem;
   border-radius: 999px;
   font-size: 0.85rem;
   background: rgba(158, 158, 158, 0.15);
   color: #616161;
+  transition: background 0.3s ease, color 0.3s ease;
 
   &.active {
-    background: rgba(56, 142, 60, 0.12);
-    color: #2e7d32;
+    background: rgba(46, 125, 50, 0.18);
+    color: #1b5e20;
   }
 
   mat-icon {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 }
 
 .actions {
   white-space: nowrap;
-  text-align: right;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.5rem;
+  justify-content: flex-end;
 
   button[mat-stroked-button] {
     text-transform: none;
@@ -107,22 +106,19 @@ tr.empty td {
   }
 }
 
-@media (max-width: 960px) {
-  .filters {
-    grid-template-columns: 1fr;
-  }
-
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-}
-
 @media (max-width: 720px) {
   table th,
   table td {
-    padding: 0.75rem;
+    padding: 0.85rem;
+  }
+
+  .section-actions {
+    width: 100%;
+
+    .cta {
+      width: 100%;
+      justify-content: center;
+    }
   }
 
   .actions {
