@@ -1,0 +1,127 @@
+.devices-container {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    margin: 0 0 0.25rem 0;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: none;
+    font-weight: 600;
+  }
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(180px, 220px);
+  gap: 1rem;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.table-wrapper {
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(15, 76, 129, 0.08);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.6);
+    background: rgba(13, 71, 161, 0.04);
+  }
+
+  td,
+  th {
+    padding: 1rem;
+  }
+
+  td {
+    vertical-align: middle;
+  }
+}
+
+.device-name {
+  font-weight: 600;
+}
+
+.device-meta {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 0.85rem;
+}
+
+.status-chip .dot {
+  font-size: 0.5rem;
+}
+
+.actions-column {
+  white-space: nowrap;
+  text-align: right;
+
+  button + button {
+    margin-left: 0.35rem;
+  }
+}
+
+tr.empty td {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: rgba(0, 0, 0, 0.54);
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: rgba(21, 101, 192, 0.45);
+  }
+}
+
+@media (max-width: 960px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-column {
+    text-align: left;
+  }
+}
+
+@media (max-width: 720px) {
+  table {
+    th,
+    td {
+      padding: 0.75rem;
+    }
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+
+    button {
+      align-self: stretch;
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,95 @@
+<div class="devices-container">
+  <div class="header">
+    <div>
+      <h2>การจัดการเครื่องมือแพทย์</h2>
+      <p class="text-muted">ดูรายละเอียด เพิ่ม และอัปเดตสถานะเครื่องมือได้จากที่นี่</p>
+    </div>
+    <button mat-flat-button color="primary" (click)="addDevice()">
+      <mat-icon>add_circle</mat-icon>
+      เพิ่มเครื่องมือแพทย์ใหม่
+    </button>
+  </div>
+
+  <div class="filters" [formGroup]="filterGroup">
+    <mat-form-field appearance="outline">
+      <mat-label>ค้นหา</mat-label>
+      <input matInput formControlName="search" placeholder="ชื่อ, หมายเลข, หน่วยงาน" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>สถานะ</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="all">ทั้งหมด</mat-option>
+        <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="filteredDevices()" [trackBy]="trackById">
+      <ng-container matColumnDef="qr">
+        <th mat-header-cell *matHeaderCellDef>QR</th>
+        <td mat-cell *matCellDef="let device">
+          <button mat-icon-button color="primary" matTooltip="แสดง QR Code">
+            <mat-icon>qr_code</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>ชื่อเครื่องมือ</th>
+        <td mat-cell *matCellDef="let device">
+          <div class="device-name">{{ device.name }}</div>
+          <div class="device-meta">{{ device.location }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="code">
+        <th mat-header-cell *matHeaderCellDef>หมายเลขเครื่องมือ</th>
+        <td mat-cell *matCellDef="let device">{{ device.code }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>สถานะ</th>
+        <td mat-cell *matCellDef="let device">
+          <span [class]="statusClass(device.status)">
+            <mat-icon fontIcon="circle" class="dot"></mat-icon>
+            {{ statusLabel(device.status) }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="addedAt">
+        <th mat-header-cell *matHeaderCellDef>วันที่เพิ่ม</th>
+        <td mat-cell *matCellDef="let device">{{ device.addedAt | date: 'd MMM yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions-column">การจัดการ</th>
+        <td mat-cell *matCellDef="let device" class="actions-column">
+          <button mat-icon-button color="primary" matTooltip="ดูรายละเอียด" (click)="viewDetail(device)">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" matTooltip="แก้ไข" (click)="editDevice(device)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" matTooltip="ลบ" (click)="deleteDevice(device)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      <tr class="empty" *ngIf="filteredDevices().length === 0">
+        <td colspan="6">
+          <mat-icon>inventory_2</mat-icon>
+          <p>ไม่พบเครื่องมือที่ตรงกับเงื่อนไข</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

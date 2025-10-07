@@ -1,0 +1,87 @@
+@use '@angular/material' as mat;
+
+$primary-blue: mat.$blue-palette;
+$accent-cyan: mat.$cyan-palette;
+
+html {
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: $primary-blue,
+      tertiary: $accent-cyan,
+    ),
+    typography: (
+      brand-family: 'Prompt, Roboto, "Helvetica Neue", sans-serif',
+      plain-family: 'Prompt, Roboto, "Helvetica Neue", sans-serif',
+      medium-weight: 500,
+      bold-weight: 600,
+    ),
+    density: 0,
+  ));
+}
+
+body {
+  color-scheme: light;
+  margin: 0;
+  min-height: 100%;
+  background: linear-gradient(180deg, #f7fbff 0%, #ffffff 35%);
+  color: var(--mat-sys-on-surface);
+  font-family: 'Prompt', 'Roboto', 'Helvetica Neue', sans-serif;
+  letter-spacing: 0.01rem;
+}
+
+html, body {
+  height: 100%;
+}
+
+.app-background {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(229, 240, 255, 0.6) 0%, rgba(255, 255, 255, 0.9) 100%);
+}
+
+.text-muted {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.status-chip {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.status-ready {
+  background-color: rgba(25, 118, 210, 0.1);
+  color: #1565c0;
+}
+
+.status-maintenance {
+  background-color: rgba(255, 193, 7, 0.15);
+  color: #ff8f00;
+}
+
+.status-broken {
+  background-color: rgba(229, 57, 53, 0.12);
+  color: #c62828;
+}
+
+.status-retired {
+  background-color: rgba(117, 117, 117, 0.12);
+  color: #424242;
+}
+
+.mat-mdc-card {
+  border-radius: 18px !important;
+  box-shadow: 0 14px 45px rgba(16, 49, 120, 0.08);
+}
+
+.mat-toolbar {
+  font-family: inherit;
+}
+
+.mat-drawer-container {
+  background-color: transparent;
+}

@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>
+  <mat-icon color="primary">cloud_upload</mat-icon>
+  อัปโหลดเอกสาร PDF
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>ชื่อเครื่องมือแพทย์</mat-label>
+      <input matInput formControlName="deviceName" />
+      <mat-error *ngIf="form.controls.deviceName.hasError('required')">กรุณากรอกชื่อเครื่องมือ</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>ประเภทเอกสาร</mat-label>
+      <mat-select formControlName="documentType">
+        <mat-option *ngFor="let type of data.types" [value]="type">{{ type }}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.documentType.hasError('required')">กรุณาเลือกประเภทเอกสาร</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>ชื่อไฟล์ PDF</mat-label>
+      <input matInput formControlName="fileName" placeholder="ชื่อไฟล์.pdf" />
+      <mat-error *ngIf="form.controls.fileName.hasError('required')">กรุณากรอกชื่อไฟล์</mat-error>
+    </mat-form-field>
+  </form>
+  <p class="hint">* ระบบตัวอย่างนี้ยังไม่รองรับการอัปโหลดไฟล์จริง ใช้เพื่อจำลองขั้นตอนเท่านั้น</p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cancel()">ยกเลิก</button>
+  <button mat-flat-button color="primary" (click)="save()">อัปโหลด</button>
+</mat-dialog-actions>

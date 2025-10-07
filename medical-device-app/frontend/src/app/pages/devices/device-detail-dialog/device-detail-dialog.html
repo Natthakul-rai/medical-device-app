@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>
+  <mat-icon color="primary">medical_services</mat-icon>
+  {{ data.name }}
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <section class="info-grid">
+    <div>
+      <h3>ข้อมูลทั่วไป</h3>
+      <ul>
+        <li><span>หมายเลข:</span> {{ data.code }}</li>
+        <li><span>Serial:</span> {{ data.serial }}</li>
+        <li><span>หมวดหมู่:</span> {{ data.category }}</li>
+        <li><span>สถานที่:</span> {{ data.location }}</li>
+      </ul>
+    </div>
+    <div>
+      <h3>การสอบเทียบ</h3>
+      <ul>
+        <li><span>ล่าสุด:</span> {{ data.lastCalibration | date: 'd MMM yyyy' }}</li>
+        <li><span>รอบถัดไป:</span> {{ data.nextCalibration | date: 'd MMM yyyy' }}</li>
+      </ul>
+    </div>
+  </section>
+
+  <mat-divider></mat-divider>
+
+  <section class="status-section">
+    <h3>ปรับปรุงสถานะ</h3>
+    <mat-form-field appearance="outline">
+      <mat-label>สถานะเครื่องมือ</mat-label>
+      <mat-select [formControl]="statusControl">
+        <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </section>
+
+  <mat-divider></mat-divider>
+
+  <section class="attachments">
+    <h3>ไฟล์แนบ</h3>
+    <mat-list>
+      <mat-list-item *ngFor="let file of data.attachments">
+        <mat-icon matListItemIcon>description</mat-icon>
+        <div matListItemTitle>{{ file.name }}</div>
+        <button mat-stroked-button color="primary">ดาวน์โหลด</button>
+      </mat-list-item>
+    </mat-list>
+    <p *ngIf="!data.attachments?.length" class="text-muted">ยังไม่มีเอกสารแนบ</p>
+  </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="close()">ยกเลิก</button>
+  <button mat-flat-button color="primary" (click)="save()">บันทึกสถานะ</button>
+</mat-dialog-actions>

@@ -1,0 +1,73 @@
+<div class="documents-container">
+  <div class="header">
+    <div>
+      <h2>การจัดการเอกสาร</h2>
+      <p class="text-muted">จัดเก็บและติดตามไฟล์เอกสารของเครื่องมือแพทย์</p>
+    </div>
+    <button mat-flat-button color="primary" (click)="openUpload()">
+      <mat-icon>cloud_upload</mat-icon>
+      อัปโหลด PDF
+    </button>
+  </div>
+
+  <div class="filters" [formGroup]="filterGroup">
+    <mat-form-field appearance="outline">
+      <mat-label>ค้นหาเอกสาร</mat-label>
+      <input matInput formControlName="search" placeholder="ชื่อเครื่องมือหรือประเภทเอกสาร" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>ประเภทเอกสาร</mat-label>
+      <mat-select formControlName="type">
+        <mat-option value="all">ทั้งหมด</mat-option>
+        <mat-option *ngFor="let type of documentTypes" [value]="type">{{ type }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="table-wrapper">
+    <table mat-table [dataSource]="filteredDocuments()">
+      <ng-container matColumnDef="device">
+        <th mat-header-cell *matHeaderCellDef>เครื่องมือแพทย์</th>
+        <td mat-cell *matCellDef="let doc">
+          <div class="device-name">{{ doc.deviceName }}</div>
+          <div class="file-name">{{ doc.fileName }}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>ประเภทเอกสาร</th>
+        <td mat-cell *matCellDef="let doc">
+          <span class="type-chip">{{ doc.documentType }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="uploadedAt">
+        <th mat-header-cell *matHeaderCellDef>วันที่อัปโหลด</th>
+        <td mat-cell *matCellDef="let doc">{{ doc.uploadedAt | date: 'd MMM yyyy' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="actions">การจัดการ</th>
+        <td mat-cell *matCellDef="let doc" class="actions">
+          <button mat-icon-button color="primary" (click)="download(doc)" matTooltip="ดาวน์โหลด">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="remove(doc)" matTooltip="ลบ">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columns"></tr>
+      <tr mat-row *matRowDef="let row; columns: columns"></tr>
+      <tr class="empty" *ngIf="filteredDocuments().length === 0">
+        <td colspan="4">
+          <mat-icon>description</mat-icon>
+          <p>ยังไม่มีเอกสารในรายการ</p>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

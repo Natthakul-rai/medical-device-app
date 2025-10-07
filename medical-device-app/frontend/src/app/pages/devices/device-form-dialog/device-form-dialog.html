@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>
+  <mat-icon color="primary">medical_services</mat-icon>
+  {{ data.mode === 'create' ? 'เพิ่มเครื่องมือแพทย์' : 'แก้ไขข้อมูลเครื่องมือ' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>ชื่อเครื่องมือ</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="form.controls.name.hasError('required')">กรุณากรอกชื่อเครื่องมือ</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>หมายเลขเครื่องมือ</mat-label>
+      <input matInput formControlName="code" />
+      <mat-error *ngIf="form.controls.code.hasError('required')">กรุณากรอกหมายเลข</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Serial Number</mat-label>
+      <input matInput formControlName="serial" />
+      <mat-error *ngIf="form.controls.serial.hasError('required')">กรุณากรอก Serial</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>หมวดหมู่</mat-label>
+      <input matInput formControlName="category" />
+      <mat-error *ngIf="form.controls.category.hasError('required')">กรุณากรอกหมวดหมู่</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>สถานะ</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ option.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.status.hasError('required')">กรุณาเลือกสถานะ</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>สถานที่</mat-label>
+      <input matInput formControlName="location" />
+      <mat-error *ngIf="form.controls.location.hasError('required')">กรุณากรอกสถานที่</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>วันที่สอบเทียบล่าสุด</mat-label>
+      <input matInput type="date" formControlName="lastCalibration" />
+      <mat-error *ngIf="form.controls.lastCalibration.hasError('required')">
+        กรุณาเลือกวันที่สอบเทียบล่าสุด
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>วันที่สอบเทียบครั้งถัดไป</mat-label>
+      <input matInput type="date" formControlName="nextCalibration" />
+      <mat-error *ngIf="form.controls.nextCalibration.hasError('required')">
+        กรุณาเลือกวันที่สอบเทียบครั้งถัดไป
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cancel()">ยกเลิก</button>
+  <button mat-flat-button color="primary" (click)="save()">บันทึก</button>
+</mat-dialog-actions>

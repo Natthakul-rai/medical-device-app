@@ -1,0 +1,53 @@
+<div class="login-wrapper">
+  <mat-card class="login-card">
+    <div class="brand">
+      <img src="assets/logo.svg" alt="Medical Device Management" class="brand-logo" />
+      <div>
+        <h1>Medical Device Management</h1>
+        <p>ระบบบริหารจัดการเครื่องมือแพทย์สำหรับผู้ดูแล</p>
+      </div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+      <mat-form-field appearance="outline">
+        <mat-label>อีเมล</mat-label>
+        <input matInput type="email" formControlName="email" placeholder="admin@hospital.co.th" />
+        <mat-icon matSuffix>mail</mat-icon>
+        <mat-error *ngIf="form.controls.email.hasError('required')">
+          กรุณากรอกอีเมล
+        </mat-error>
+        <mat-error *ngIf="form.controls.email.hasError('email')">
+          รูปแบบอีเมลไม่ถูกต้อง
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>รหัสผ่าน</mat-label>
+        <input matInput type="password" formControlName="password" placeholder="••••••" />
+        <mat-icon matSuffix>lock</mat-icon>
+        <mat-error *ngIf="form.controls.password.hasError('required')">
+          กรุณากรอกรหัสผ่าน
+        </mat-error>
+        <mat-error *ngIf="form.controls.password.hasError('minlength')">
+          รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" type="submit" [disabled]="loading()">
+        <mat-spinner *ngIf="loading()" diameter="20"></mat-spinner>
+        <span *ngIf="!loading()">เข้าสู่ระบบ</span>
+      </button>
+
+      <button type="button" class="forgot-link" (click)="goToForgot()">
+        ลืมรหัสผ่าน
+      </button>
+    </form>
+  </mat-card>
+
+  <div class="login-illustration">
+    <mat-icon>qr_code</mat-icon>
+    <mat-icon>medical_services</mat-icon>
+    <mat-icon>description</mat-icon>
+    <p>ติดตามสถานะเครื่องมือ ตรวจสอบเอกสาร และจัดการผู้ใช้งานได้ในที่เดียว</p>
+  </div>
+</div>

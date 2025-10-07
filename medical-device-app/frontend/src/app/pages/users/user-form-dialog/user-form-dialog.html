@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>
+  <mat-icon color="primary">people</mat-icon>
+  {{ data.mode === 'create' ? 'เพิ่มผู้ใช้งาน' : 'แก้ไขข้อมูลผู้ใช้งาน' }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="form" class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>ชื่อ-นามสกุล</mat-label>
+      <input matInput formControlName="name" />
+      <mat-error *ngIf="form.controls.name.hasError('required')">กรุณากรอกชื่อผู้ใช้</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>อีเมล</mat-label>
+      <input matInput type="email" formControlName="email" />
+      <mat-error *ngIf="form.controls.email.hasError('required')">กรุณากรอกอีเมล</mat-error>
+      <mat-error *ngIf="form.controls.email.hasError('email')">รูปแบบอีเมลไม่ถูกต้อง</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Role</mat-label>
+      <mat-select formControlName="role">
+        <mat-option *ngFor="let role of roles" [value]="role.value">
+          {{ role.label }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.controls.role.hasError('required')">กรุณาเลือก Role</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>สถานะ</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let status of statuses" [value]="status.value">
+          {{ status.label }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>รหัสผ่าน</mat-label>
+      <input matInput type="password" formControlName="password" placeholder="********" />
+      <mat-error *ngIf="form.controls.password.hasError('required')">กรุณากรอกรหัสผ่าน</mat-error>
+      <mat-error *ngIf="form.controls.password.hasError('minlength')">รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร</mat-error>
+      <mat-hint *ngIf="data.mode === 'edit'">เว้นว่างหากไม่ต้องการเปลี่ยนรหัสผ่าน</mat-hint>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cancel()">ยกเลิก</button>
+  <button mat-flat-button color="primary" (click)="save()">บันทึก</button>
+</mat-dialog-actions>
