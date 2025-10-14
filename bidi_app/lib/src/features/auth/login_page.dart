@@ -46,108 +46,101 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         child: SafeArea(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(minHeight: constraints.maxHeight - 48),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Spacer(),
-                      Text(
-                        'BIDI Medical Device Management',
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall
-                            ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
-                      ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        'เข้าสู่ระบบสำหรับเจ้าหน้าที่ เพื่อบริหารจัดการเครื่องมือแพทย์แบบเรียลไทม์',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white70),
-                      ),
-                      const SizedBox(height: 24),
-                      Card(
-                        elevation: 14,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(26),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'BIDI Medical Device Management',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineSmall
+                        ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'เข้าสู่ระบบสำหรับเจ้าหน้าที่ เพื่อบริหารจัดการเครื่องมือแพทย์แบบเรียลไทม์',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                  const SizedBox(height: 32),
+                  Card(
+                    elevation: 14,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(26),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
                               children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: colorScheme.primary.withOpacity(0.1),
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      child: Icon(Icons.shield_outlined, color: colorScheme.primary),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    const Expanded(
-                                      child: Text(
-                                        'เข้าสู่ระบบ BIDI MDM',
-                                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.primary.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                  child: Icon(Icons.shield_outlined, color: colorScheme.primary),
                                 ),
-                                const SizedBox(height: 24),
-                                TextFormField(
-                                  controller: _emailController,
-                                  decoration: const InputDecoration(labelText: 'อีเมล BIDI'),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) return 'กรุณากรอกอีเมล';
-                                    if (!value.contains('@')) return 'รูปแบบอีเมลไม่ถูกต้อง';
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(height: 16),
-                                TextFormField(
-                                  controller: _passwordController,
-                                  obscureText: true,
-                                  decoration: const InputDecoration(labelText: 'รหัสผ่าน'),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) return 'กรุณากรอกรหัสผ่าน';
-                                    if (value.length < 6) return 'รหัสผ่านต้องยาวอย่างน้อย 6 ตัวอักษร';
-                                    return null;
-                                  },
-                                ),
-                                const SizedBox(height: 24),
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: FilledButton.icon(
-                                    onPressed: _loading ? null : _submit,
-                                    icon: _loading
-                                        ? const SizedBox(
-                                            width: 18,
-                                            height: 18,
-                                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                                          )
-                                        : const Icon(Icons.login_rounded),
-                                    label: const Text('เข้าสู่ระบบ'),
+                                const SizedBox(width: 12),
+                                const Expanded(
+                                  child: Text(
+                                    'เข้าสู่ระบบ BIDI MDM',
+                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                                   ),
                                 ),
                               ],
                             ),
-                          ),
+                            const SizedBox(height: 24),
+                            TextFormField(
+                              controller: _emailController,
+                              decoration: const InputDecoration(labelText: 'อีเมล BIDI'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) return 'กรุณากรอกอีเมล';
+                                if (!value.contains('@')) return 'รูปแบบอีเมลไม่ถูกต้อง';
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _passwordController,
+                              obscureText: true,
+                              decoration: const InputDecoration(labelText: 'รหัสผ่าน'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) return 'กรุณากรอกรหัสผ่าน';
+                                if (value.length < 6) return 'รหัสผ่านต้องยาวอย่างน้อย 6 ตัวอักษร';
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 26),
+                            SizedBox(
+                              width: double.infinity,
+                              child: FilledButton.icon(
+                                onPressed: _loading ? null : _submit,
+                                icon: _loading
+                                    ? const SizedBox(
+                                        width: 18,
+                                        height: 18,
+                                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                      )
+                                    : const Icon(Icons.login_rounded),
+                                label: const Text('เข้าสู่ระบบ'),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const Spacer(flex: 2),
-                    ],
+                    ),
                   ),
-                ),
-              );
-            },
+                ],
+              ),
+            ),
           ),
         ),
       ),
