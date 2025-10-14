@@ -18,24 +18,52 @@ class DocumentsPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final doc = _documents[index];
           return Card(
-            child: ListTile(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              leading: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.redAccent.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Icon(Icons.picture_as_pdf, color: Colors.redAccent),
-              ),
-              title: Text(doc.title, style: const TextStyle(fontWeight: FontWeight.w600)),
-              subtitle: Text('เครื่องมือ: ${doc.device}\nอัปโหลด: ${doc.uploadedAt}'),
-              isThreeLine: true,
-              trailing: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IconButton(icon: const Icon(Icons.remove_red_eye_outlined), onPressed: () {}),
-                  IconButton(icon: const Icon(Icons.download_rounded), onPressed: () {}),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: const Icon(Icons.picture_as_pdf, color: Colors.redAccent),
+                  ),
+                  const SizedBox(width: 18),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(doc.title, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+                        const SizedBox(height: 6),
+                        Text('เครื่องมือ: ${doc.device}', style: const TextStyle(color: Colors.black54)),
+                        Text('อัปโหลด: ${doc.uploadedAt}', style: const TextStyle(color: Colors.black54)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove_red_eye_outlined),
+                        onPressed: () {},
+                        iconSize: 20,
+                        constraints: const BoxConstraints.tightFor(width: 40, height: 40),
+                        padding: EdgeInsets.zero,
+                      ),
+                      const SizedBox(height: 6),
+                      IconButton(
+                        icon: const Icon(Icons.download_rounded),
+                        onPressed: () {},
+                        iconSize: 20,
+                        constraints: const BoxConstraints.tightFor(width: 40, height: 40),
+                        padding: EdgeInsets.zero,
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
