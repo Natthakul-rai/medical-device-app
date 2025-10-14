@@ -18,6 +18,8 @@ class BidiPageShell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final effectivePadding = padding.add(const EdgeInsets.only(bottom: 120));
+
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -28,7 +30,7 @@ class BidiPageShell extends StatelessWidget {
       ),
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: padding,
+          padding: effectivePadding,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

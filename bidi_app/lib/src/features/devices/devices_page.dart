@@ -14,13 +14,6 @@ class DevicesPage extends StatelessWidget {
     return BidiPageShell(
       title: 'รายการเครื่องมือแพทย์',
       subtitle: 'สำรวจเครื่องมือทั้งหมด พร้อมสถานะล่าสุดและตำแหน่งจัดเก็บ',
-      actions: [
-        FilledButton.icon(
-          onPressed: () {},
-          icon: const Icon(Icons.add_circle_outline),
-          label: const Text('เพิ่มเครื่องมือ'),
-        ),
-      ],
       child: Column(
         children: [
           Material(

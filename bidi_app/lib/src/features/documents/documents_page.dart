@@ -10,13 +10,6 @@ class DocumentsPage extends StatelessWidget {
     return BidiPageShell(
       title: 'เอกสารเครื่องมือแพทย์',
       subtitle: 'ดาวน์โหลดใบรับรอง คู่มือ และรายงานต่าง ๆ ของเครื่องมือแต่ละรายการ',
-      actions: [
-        OutlinedButton.icon(
-          onPressed: () {},
-          icon: const Icon(Icons.cloud_upload_outlined),
-          label: const Text('อัปโหลดเอกสาร'),
-        ),
-      ],
       child: ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
