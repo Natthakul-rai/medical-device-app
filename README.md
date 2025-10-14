@@ -12,6 +12,7 @@
 medical-device-app/
  ├── frontend/      # ซอร์สโค้ด Angular ทั้งหมด
  └── backend/       # โฟลเดอร์สำหรับงานฝั่งแบ็กเอนด์ (ยังว่าง)
+bidi_app/             # Flutter แอปสำหรับบุคลากรภาคสนาม (BIDI)
 ```
 ภายใน `frontend/` มีไฟล์สำคัญดังนี้
 - `src/app/layout/main-layout/` – โครงสร้าง layout หลัก พร้อมเมนู BIDI MDM
@@ -54,6 +55,7 @@ medical-device-app/
 - ปรับธีมรวมทั้ง responsive layout, ตาราง, status chip และ UI รายละเอียดอื่น ๆ
 - เปลี่ยนชื่อแบรนด์ทั้งหมดเป็น **BIDI Medical Device Management** และเมนู BIDI MDM
 - ปรับ Sidebar ให้เป็นบล็อกสี่เหลี่ยม, logout button ใหม่ และเสริม UX ของหน้า Devices/Users/Documents
+- สร้างโปรเจกต์ **Flutter (bidi_app/)** สำหรับบุคลากรที่หน้างาน: Login, สแกน QR, รายการเครื่องมือ, เอกสาร, ประวัติ, โปรไฟล์ (mock data)
 
 ## งานถัดไปที่เป็นไปได้
 - พัฒนาแบ็กเอนด์จริงหรือเชื่อมต่อ API สำหรับข้อมูลแท้จริง

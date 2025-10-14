@@ -1,0 +1,6 @@
+analyzer:
+  language:
+    strict-raw-types: false
+linter:
+  rules:
+    avoid_print: false
