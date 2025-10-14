@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../services/device_service.dart';
 import '../../widgets/device_card.dart';
+import '../../widgets/page_shell.dart';
 
 class DevicesPage extends StatelessWidget {
   const DevicesPage({super.key});
@@ -10,30 +11,42 @@ class DevicesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final devices = DeviceService.instance.devices;
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
+    return BidiPageShell(
+      title: 'รายการเครื่องมือแพทย์',
+      subtitle: 'สำรวจเครื่องมือทั้งหมด พร้อมสถานะล่าสุดและตำแหน่งจัดเก็บ',
+      actions: [
+        FilledButton.icon(
+          onPressed: () {},
+          icon: const Icon(Icons.add_circle_outline),
+          label: const Text('เพิ่มเครื่องมือ'),
+        ),
+      ],
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          TextField(
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.search),
-              hintText: 'ค้นหาเครื่องมือแพทย์',
-              filled: true,
-              fillColor: Colors.white,
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+          Material(
+            elevation: 2,
+            borderRadius: BorderRadius.circular(24),
+            child: TextField(
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                prefixIcon: const Icon(Icons.search),
+                hintText: 'ค้นหาเครื่องมือหรือสแกนหมายเลข',
+              ),
             ),
           ),
-          const SizedBox(height: 16),
-          Expanded(
-            child: ListView.separated(
-              itemCount: devices.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 12),
-              itemBuilder: (context, index) {
-                final device = devices[index];
-                return DeviceCard(device: device, onTap: () => _showDeviceDetail(context, device));
-              },
-            ),
+          const SizedBox(height: 20),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: devices.length,
+            separatorBuilder: (_, __) => const SizedBox(height: 16),
+            itemBuilder: (context, index) {
+              final device = devices[index];
+              return DeviceCard(
+                device: device,
+                onTap: () => _showDeviceDetail(context, device),
+              );
+            },
           ),
         ],
       ),
@@ -45,34 +58,36 @@ class DevicesPage extends StatelessWidget {
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       builder: (context) {
-        return DraggableScrollableSheet(
-          expand: false,
-          maxChildSize: 0.9,
-          initialChildSize: 0.75,
-          builder: (context, controller) {
-            return Padding(
-              padding: const EdgeInsets.all(24),
-              child: ListView(
-                controller: controller,
-                children: [
-                  Text(device.name, style: Theme.of(context).textTheme.headlineSmall),
-                  const SizedBox(height: 8),
-                  Text('หมายเลข: ${device.code}'),
-                  Text('สถานะ: ${device.statusLabel}'),
-                  const SizedBox(height: 16),
-                  Text('รายละเอียด', style: Theme.of(context).textTheme.titleMedium),
-                  Text(device.description ?? 'ไม่มีข้อมูลรายละเอียด'),
-                  const SizedBox(height: 24),
-                  FilledButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.qr_code),
-                    label: const Text('ดู QR Code'),
-                  ),
-                ],
-              ),
-            );
-          },
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(device.name, style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(height: 6),
+                Text('หมายเลข: ${device.code}'),
+                Text('สถานะ: ${device.statusLabel}'),
+                Text('ตำแหน่ง: ${device.location}'),
+                const SizedBox(height: 20),
+                Text('รายละเอียด', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                Text(device.description ?? 'ไม่มีข้อมูลรายละเอียด'),
+                const SizedBox(height: 24),
+                FilledButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.qr_code_2),
+                  label: const Text('แสดง QR Code'),
+                ),
+                const SizedBox(height: 12),
+              ],
+            ),
+          ),
         );
       },
     );

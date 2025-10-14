@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../services/device_service.dart';
+import 'status_chip.dart';
 
 class DeviceCard extends StatelessWidget {
   const DeviceCard({required this.device, this.onTap, super.key});
@@ -12,90 +13,65 @@ class DeviceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Material(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(18),
+    return Card(
+      elevation: 6,
+      clipBehavior: Clip.hardEdge,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(18),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          padding: const EdgeInsets.all(20),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 48,
-                height: 48,
+                width: 52,
+                height: 52,
                 decoration: BoxDecoration(
-                  color: colorScheme.primary.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    colors: [colorScheme.primary.withOpacity(0.85), colorScheme.secondary],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                child: Icon(Icons.medical_services, color: colorScheme.primary),
+                child: const Icon(Icons.medical_services_outlined, color: Colors.white),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 20),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(device.name, style: const TextStyle(fontWeight: FontWeight.w600)),
-                    const SizedBox(height: 4),
-                    Text('หมายเลข: ${device.code}', style: const TextStyle(fontSize: 13, color: Colors.black54)),
-                    const SizedBox(height: 6),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                device.name,
+                                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
+                              ),
+                              const SizedBox(height: 4),
+                              Text('หมายเลข: ${device.code}', style: const TextStyle(color: Colors.black54)),
+                            ],
+                          ),
+                        ),
+                        StatusChip(label: device.statusLabel),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
                     Row(
                       children: [
-                        Icon(Icons.pin_drop_outlined, size: 16, color: colorScheme.outline),
+                        const Icon(Icons.pin_drop_outlined, size: 18, color: Colors.black45),
                         const SizedBox(width: 6),
-                        Text(device.location, style: const TextStyle(fontSize: 13)),
+                        Text(device.location, style: const TextStyle(color: Colors.black87)),
                       ],
                     ),
                   ],
                 ),
               ),
-              _StatusChip(status: device.statusLabel),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _StatusChip extends StatelessWidget {
-  const _StatusChip({required this.status});
-
-  final String status;
-
-  @override
-  Widget build(BuildContext context) {
-    Color background;
-    Color foreground;
-
-    switch (status) {
-      case 'พร้อมใช้งาน':
-        background = const Color(0xFFE3F2FD);
-        foreground = const Color(0xFF1E88E5);
-        break;
-      case 'รอซ่อม':
-        background = const Color(0xFFFFF3E0);
-        foreground = const Color(0xFFF9A825);
-        break;
-      case 'ชำรุด':
-        background = const Color(0xFFFFEBEE);
-        foreground = const Color(0xFFE53935);
-        break;
-      default:
-        background = const Color(0xFFE8EAF6);
-        foreground = const Color(0xFF5C6BC0);
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: background,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        status,
-        style: TextStyle(color: foreground, fontSize: 12, fontWeight: FontWeight.w600),
       ),
     );
   }

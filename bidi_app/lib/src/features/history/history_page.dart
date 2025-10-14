@@ -1,25 +1,41 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/page_shell.dart';
+
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: const EdgeInsets.all(16),
-      itemCount: _history.length,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (context, index) {
-        final item = _history[index];
-        return Card(
-          child: ListTile(
-            leading: const Icon(Icons.history),
-            title: Text(item.title),
-            subtitle: Text('${item.timestamp}\n${item.description}'),
-            isThreeLine: true,
-          ),
-        );
-      },
+    return BidiPageShell(
+      title: 'ประวัติการเข้าชม',
+      subtitle: 'ติดตามกิจกรรมล่าสุดที่เกี่ยวข้องกับเครื่องมือแพทย์ของคุณ',
+      child: ListView.separated(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: _history.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 12),
+        itemBuilder: (context, index) {
+          final item = _history[index];
+          return Card(
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+              leading: Container(
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                ),
+                child: const Icon(Icons.history, color: Color(0xFF0D47A1)),
+              ),
+              title: Text(item.title, style: const TextStyle(fontWeight: FontWeight.w600)),
+              subtitle: Text('${item.timestamp}\n${item.description}'),
+              isThreeLine: true,
+            ),
+          );
+        },
+      ),
     );
   }
 }

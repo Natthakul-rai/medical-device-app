@@ -16,7 +16,6 @@ class BidiApp extends StatefulWidget {
 }
 
 class _BidiAppState extends State<BidiApp> {
-  final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
   final ValueNotifier<bool> _isAuthenticated = ValueNotifier<bool>(false);
 
   @override
@@ -25,7 +24,6 @@ class _BidiAppState extends State<BidiApp> {
       title: 'BIDI Medical Device Viewer',
       debugShowCheckedModeBanner: false,
       theme: buildBidiTheme(),
-      navigatorKey: _rootNavigatorKey,
       home: ValueListenableBuilder<bool>(
         valueListenable: _isAuthenticated,
         builder: (context, signedIn, _) {
@@ -62,19 +60,11 @@ class _MainShellState extends State<_MainShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: _destinations[_currentIndex].page,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (index) => setState(() => _currentIndex = index),
-        destinations: _destinations
-            .map((destination) => NavigationDestination(
-                  icon: Icon(destination.icon),
-                  label: destination.label,
-                ))
-            .toList(),
-      ),
       appBar: AppBar(
-        title: Text(_destinations[_currentIndex].label),
+        backgroundColor: Colors.transparent,
+        title: const Text('BIDI MDM'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -82,6 +72,23 @@ class _MainShellState extends State<_MainShell> {
             onPressed: widget.onLoggedOut,
           ),
         ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(22),
+          child: NavigationBar(
+            selectedIndex: _currentIndex,
+            onDestinationSelected: (index) => setState(() => _currentIndex = index),
+            height: 68,
+            destinations: _destinations
+                .map((destination) => NavigationDestination(
+                      icon: Icon(destination.icon),
+                      label: destination.label,
+                    ))
+                .toList(),
+          ),
+        ),
       ),
     );
   }
