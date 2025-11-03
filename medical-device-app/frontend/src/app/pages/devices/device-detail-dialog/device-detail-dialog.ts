@@ -1,28 +1,24 @@
 import { DatePipe, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
 
-import { DeviceItem, DeviceStatus } from '../devices';
+import { Device, DeviceStatus } from '../../../core/services/device.service';
 
 @Component({
   selector: 'app-device-detail-dialog',
   standalone: true,
   imports: [
+    CommonModule, 
     NgFor,
     NgIf,
-    ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
     MatIconModule,
-    MatFormFieldModule,
-    MatSelectModule,
     MatDividerModule,
     MatListModule,
     DatePipe,
@@ -33,25 +29,16 @@ import { DeviceItem, DeviceStatus } from '../devices';
 })
 export class DeviceDetailDialogComponent {
   private readonly dialogRef = inject(MatDialogRef<DeviceDetailDialogComponent>);
-  protected readonly data = inject<DeviceItem>(MAT_DIALOG_DATA);
+  protected readonly data = inject<Device>(MAT_DIALOG_DATA);
 
-  protected readonly statusControl = new FormControl<DeviceStatus>(this.data.status, {
-    nonNullable: true,
-  });
-
-  protected readonly statusOptions = [
-    { value: 'ready' as DeviceStatus, label: 'พร้อมใช้งาน' },
-    { value: 'maintenance' as DeviceStatus, label: 'รอซ่อม' },
-    { value: 'broken' as DeviceStatus, label: 'ชำรุด' },
-    { value: 'retired' as DeviceStatus, label: 'ยกเลิกใช้งาน' },
-  ];
+  protected readonly statusLabels = {
+    'ready': 'พร้อมใช้งาน',
+    'maintenance': 'รอซ่อม',
+    'broken': 'ชำรุด',
+    'retired': 'ยกเลิกใช้งาน',
+  } as const;
 
   protected close(): void {
     this.dialogRef.close();
-  }
-
-  protected save(): void {
-    const status = this.statusControl.getRawValue();
-    this.dialogRef.close({ status });
   }
 }

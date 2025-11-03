@@ -1,7 +1,8 @@
 import { Injectable, WritableSignal, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { delay, map, tap } from 'rxjs/operators';
+import { delay, map, tap, catchError } from 'rxjs/operators';
+import { ApiService } from './api.service';
 
 export interface UserProfile {
   name: string;
@@ -15,6 +16,7 @@ const USER_KEY = 'mdm-user';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly router = inject(Router);
+  private readonly apiService = inject(ApiService);
   private readonly _user: WritableSignal<UserProfile | null> = signal(this.restoreUser());
 
   readonly user = computed(() => this._user());
@@ -27,20 +29,18 @@ export class AuthService {
       return of(false).pipe(delay(250));
     }
 
-    const mockProfile: UserProfile = {
-      name: 'Administrator',
-      email,
-      role: 'Admin',
-    };
-
-    return of(true).pipe(
-      delay(400),
-      tap(() => {
-        this.persistToken('mock-jwt-token');
-        this.persistUser(mockProfile);
-        this._user.set(mockProfile);
+    return this.apiService.post<{token: string, user: UserProfile}>('/auth/login', { email, password }).pipe(
+      tap(response => {
+        const { token, user } = response;
+        this.persistToken(token);
+        this.persistUser(user);
+        this._user.set(user);
       }),
-      map(() => true)
+      map(() => true),
+      catchError(error => {
+        console.error('Login failed:', error);
+        return of(false);
+      })
     );
   }
 

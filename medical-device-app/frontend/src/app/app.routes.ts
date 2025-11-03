@@ -20,22 +20,22 @@ export const routes: Routes = [
       },
       {
         path: 'dashboard',
-        title: 'แดชบอร์ด | BIDI Medical Device Management',
+        title: 'แดชบอร์ด | LAB IM - Lab Instrument Manager',
         loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.DashboardComponent),
       },
       {
         path: 'devices',
-        title: 'เครื่องมือแพทย์ | BIDI Medical Device Management',
+        title: 'อุปกรณ์ห้องแล็บ | LAB IM - Lab Instrument Manager',
         loadComponent: () => import('./pages/devices/devices').then((m) => m.DevicesComponent),
       },
       {
         path: 'users',
-        title: 'ผู้ใช้งาน | BIDI Medical Device Management',
+        title: 'ผู้ใช้งาน | LAB IM - Lab Instrument Manager',
         loadComponent: () => import('./pages/users/users').then((m) => m.UsersComponent),
       },
       {
         path: 'documents',
-        title: 'เอกสาร | BIDI Medical Device Management',
+        title: 'เอกสาร | LAB IM - Lab Instrument Manager',
         loadComponent: () => import('./pages/documents/documents').then((m) => m.DocumentsComponent),
       },
     ],

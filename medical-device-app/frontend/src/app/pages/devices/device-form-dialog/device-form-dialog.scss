@@ -19,6 +19,54 @@ mat-dialog-content {
   }
 }
 
+
+// Enhanced dropdown styling for form dialog
+.mat-select {
+  .mat-mdc-form-field-focus-overlay {
+    background-color: transparent !important;
+  }
+}
+
+.mat-select-panel {
+  z-index: 10002 !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  border-radius: 8px !important;
+  min-width: auto !important;
+  width: auto !important;
+  max-width: 280px !important;
+}
+
+// Make sure dropdown appears above everything in dialog
+::ng-deep .cdk-overlay-pane {
+  z-index: 10002 !important;
+}
+
+// Additional fixes for Material v20
+.mat-mdc-select-value-text {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.mat-mdc-select-arrow svg {
+  fill: rgba(0, 0, 0, 0.54) !important;
+}
+
+// Dialog container specific fixes
+.mat-mdc-dialog-container .mat-mdc-select-panel {
+  z-index: 10003 !important;
+  min-width: auto !important;
+  width: fit-content !important;
+  max-width: 280px !important;
+}
+
+// Ensure dropdown width matches form field
+::ng-deep .mat-mdc-select-panel .mat-mdc-option {
+  min-width: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
 @media (max-width: 600px) {
   .form-grid {
     grid-template-columns: 1fr;

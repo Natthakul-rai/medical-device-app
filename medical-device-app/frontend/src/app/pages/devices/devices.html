@@ -1,13 +1,13 @@
 <div class="devices-container page-shell">
   <div class="section-header">
     <div>
-      <h2>การจัดการเครื่องมือแพทย์</h2>
-      <p class="section-lead">ดูรายละเอียด เพิ่ม และอัปเดตสถานะเครื่องมือได้จากที่นี่</p>
+      <h2>การจัดการอุปกรณ์ห้องแล็บ</h2>
+      <p class="section-lead">ดูรายละเอียด เพิ่ม และอัปเดตสถานะอุปกรณ์ห้องแล็บได้จากที่นี่</p>
     </div>
     <div class="section-actions">
       <button mat-flat-button color="primary" class="cta" (click)="addDevice()">
         <mat-icon>add_circle</mat-icon>
-        เพิ่มเครื่องมือแพทย์ใหม่
+        เพิ่มอุปกรณ์ห้องแล็บใหม่
       </button>
     </div>
   </div>
@@ -15,13 +15,13 @@
   <div class="filters surface-card" [formGroup]="filterGroup">
     <mat-form-field appearance="outline">
       <mat-label>ค้นหา</mat-label>
-      <input matInput formControlName="search" placeholder="ชื่อ, หมายเลข, หน่วยงาน" />
+      <input matInput formControlName="search" (input)="onFilterChange()" placeholder="ชื่อ, หมายเลข, หมายเลขซีเรียล, หน่วยงาน, หมวดหมู่" />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>สถานะ</mat-label>
-      <mat-select formControlName="status">
+      <mat-select formControlName="status" (selectionChange)="onFilterChange()">
         <mat-option value="all">ทั้งหมด</mat-option>
         <mat-option *ngFor="let option of statusOptions" [value]="option.value">
           {{ option.label }}
@@ -35,14 +35,14 @@
       <ng-container matColumnDef="qr">
         <th mat-header-cell *matHeaderCellDef>QR</th>
         <td mat-cell *matCellDef="let device">
-          <button mat-icon-button color="primary" matTooltip="แสดง QR Code">
+          <button mat-icon-button color="primary" matTooltip="แสดง QR Code" (click)="showQRCode(device)">
             <mat-icon>qr_code</mat-icon>
           </button>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>ชื่อเครื่องมือ</th>
+        <th mat-header-cell *matHeaderCellDef>ชื่ออุปกรณ์</th>
         <td mat-cell *matCellDef="let device">
           <div class="device-name">{{ device.name }}</div>
           <div class="device-meta">{{ device.location }}</div>
@@ -50,7 +50,7 @@
       </ng-container>
 
       <ng-container matColumnDef="code">
-        <th mat-header-cell *matHeaderCellDef>หมายเลขเครื่องมือ</th>
+        <th mat-header-cell *matHeaderCellDef>หมายเลขอุปกรณ์</th>
         <td mat-cell *matCellDef="let device">{{ device.code }}</td>
       </ng-container>
 
@@ -65,7 +65,7 @@
 
       <ng-container matColumnDef="addedAt">
         <th mat-header-cell *matHeaderCellDef>วันที่เพิ่ม</th>
-        <td mat-cell *matCellDef="let device">{{ device.addedAt | date: 'd MMM yyyy' }}</td>
+        <td mat-cell *matCellDef="let device">{{ device.createdAt | date: 'd MMM yyyy' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
@@ -88,7 +88,7 @@
       <tr class="empty" *ngIf="filteredDevices().length === 0">
         <td colspan="6">
           <mat-icon>inventory_2</mat-icon>
-          <p>ไม่พบเครื่องมือที่ตรงกับเงื่อนไข</p>
+          <p>ไม่พบอุปกรณ์ที่ตรงกับเงื่อนไข</p>
         </td>
       </tr>
     </table>

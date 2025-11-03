@@ -186,6 +186,76 @@ html, body {
   border: 1px solid rgba(21, 101, 192, 0.25);
 }
 
+// Fix for Material Select dropdown not opening and going behind
+.cdk-overlay-container {
+  z-index: 9999 !important;
+  position: fixed !important;
+}
+
+.cdk-overlay-connected-position-bounding-box {
+  z-index: 9999 !important;
+}
+
+.mat-select-panel {
+  z-index: 10000 !important;
+  position: fixed !important;
+  min-width: auto !important;
+  max-width: 280px !important;
+  margin-top: 4px !important;
+  width: fit-content !important;
+}
+
+.mat-mdc-select-panel {
+  position: fixed !important;
+  z-index: 10000 !important;
+  background: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+  overflow: auto !important;
+  max-height: 256px !important;
+  min-width: auto !important;
+  max-width: 280px !important;
+  width: fit-content !important;
+}
+
+// Ensure mat-select is clickable and has proper styling
+.mat-select-trigger {
+  cursor: pointer !important;
+  position: relative !important;
+}
+
+.mat-select-value {
+  cursor: pointer !important;
+}
+
+.mat-select-arrow-wrapper {
+  cursor: pointer !important;
+}
+
+// Additional fixes for dropdown visibility
+.mat-select {
+  position: relative !important;
+}
+
+.mat-select:focus .mat-select-trigger {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+// Dialog-specific fixes
+.mat-mdc-dialog-container .mat-select-panel {
+  z-index: 10001 !important;
+}
+
+// Ensure dropdown appears above dialog content
+.mat-mdc-dialog-container {
+  z-index: 1000;
+}
+
+.mat-mdc-dialog-surface {
+  z-index: 1001;
+}
+
 @media (max-width: 960px) {
   :root {
     --page-max-width: min(100%, 960px);

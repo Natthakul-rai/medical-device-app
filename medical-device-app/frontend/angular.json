@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "frontend": {
+    "lab-instrument-manager": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -38,13 +38,18 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "16kB",
+                  "maximumError": "32kB"
+                },
+                {
+                  "type": "common",
+                  "maximumWarning": "1MB",
+                  "maximumError": "2MB"
                 }
               ],
               "outputHashing": "all"
@@ -61,10 +66,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "frontend:build:production"
+              "buildTarget": "lab-instrument-manager:build:production"
             },
             "development": {
-              "buildTarget": "frontend:build:development"
+              "buildTarget": "lab-instrument-manager:build:development"
             }
           },
           "defaultConfiguration": "development"

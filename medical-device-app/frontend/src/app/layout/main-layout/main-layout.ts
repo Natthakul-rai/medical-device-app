@@ -49,13 +49,13 @@ export class MainLayoutComponent {
     {
       icon: 'space_dashboard',
       label: 'Dashboard',
-      description: 'ภาพรวมสถานะเครื่องมือ',
+      description: 'ภาพรวมสถานะอุปกรณ์',
       route: '/dashboard',
     },
     {
       icon: 'medical_services',
       label: 'Devices',
-      description: 'จัดการข้อมูลเครื่องมือแพทย์',
+      description: 'จัดการข้อมูลอุปกรณ์ห้องแล็บ',
       route: '/devices',
     },
     {

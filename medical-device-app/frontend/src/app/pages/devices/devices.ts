@@ -12,26 +12,12 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { formatDate } from '@angular/common';
-import { startWith } from 'rxjs';
+import { startWith, catchError, of } from 'rxjs';
 
 import { DeviceDetailDialogComponent } from './device-detail-dialog/device-detail-dialog';
 import { DeviceFormDialogComponent } from './device-form-dialog/device-form-dialog';
-
-export type DeviceStatus = 'ready' | 'maintenance' | 'broken' | 'retired';
-
-export interface DeviceItem {
-  id: string;
-  name: string;
-  code: string;
-  status: DeviceStatus;
-  addedAt: string;
-  location: string;
-  category: string;
-  serial: string;
-  lastCalibration: string;
-  nextCalibration: string;
-  attachments: { name: string; url: string }[];
-}
+import { QrDialogComponent } from './qr-dialog/qr-dialog';
+import { DeviceService, Device, DeviceStatus } from '../../core/services/device.service';
 
 @Component({
   selector: 'app-devices',
@@ -59,69 +45,21 @@ export class DevicesComponent {
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly fb = inject(FormBuilder);
+  private readonly deviceService = inject(DeviceService);
 
   protected readonly filterGroup = this.fb.nonNullable.group({
     search: [''],
     status: ['all' as 'all' | DeviceStatus],
   });
 
-  private readonly devices = signal<DeviceItem[]>([
-    {
-      id: 'MD-2045',
-      name: 'Infusion Pump CZ-200',
-      code: 'MD-2045',
-      status: 'ready',
-      addedAt: '2024-01-12',
-      location: 'ICU ชั้น 3',
-      category: 'Critical Care',
-      serial: 'CZ200-23001',
-      lastCalibration: '2023-12-01',
-      nextCalibration: '2024-12-01',
-      attachments: [
-        { name: 'เอกสารคู่มือ.pdf', url: '#' },
-        { name: 'ใบรับรองการสอบเทียบ.pdf', url: '#' },
-      ],
-    },
-    {
-      id: 'MD-1021',
-      name: 'Defibrillator PX-10',
-      code: 'MD-1021',
-      status: 'maintenance',
-      addedAt: '2023-10-02',
-      location: 'ER',
-      category: 'Emergency',
-      serial: 'PX10-12097',
-      lastCalibration: '2023-04-15',
-      nextCalibration: '2024-04-30',
-      attachments: [{ name: 'คู่มือการใช้งาน.pdf', url: '#' }],
-    },
-    {
-      id: 'MD-3301',
-      name: 'Ventilator V7 Pro',
-      code: 'MD-3301',
-      status: 'broken',
-      addedAt: '2022-08-19',
-      location: 'หอผู้ป่วยกึ่งวิกฤติ',
-      category: 'Respiratory',
-      serial: 'V7PRO-4403',
-      lastCalibration: '2023-01-10',
-      nextCalibration: '2023-12-10',
-      attachments: [{ name: 'รายงานการซ่อม.pdf', url: '#' }],
-    },
-    {
-      id: 'MD-4502',
-      name: 'Ultrasound Diagnostic U-Plus',
-      code: 'MD-4502',
-      status: 'retired',
-      addedAt: '2020-05-08',
-      location: 'คลังกลาง',
-      category: 'Imaging',
-      serial: 'UPLUS-99102',
-      lastCalibration: '2022-09-01',
-      nextCalibration: '2023-09-01',
-      attachments: [{ name: 'ประวัติการใช้งาน.pdf', url: '#' }],
-    },
-  ]);
+  private readonly devices = signal<Device[]>([]);
+  private readonly loading = signal(false);
+  private readonly error = signal<string | null>(null);
+
+  // Load devices on init
+  constructor() {
+    this.loadDevices();
+  }
 
   private readonly filterState = toSignal(
     this.filterGroup.valueChanges.pipe(startWith(this.filterGroup.getRawValue())),
@@ -137,7 +75,8 @@ export class DevicesComponent {
 
     return this.devices().filter((device) => {
       const matchesKeyword = keyword
-        ? [device.name, device.code, device.location, device.category]
+        ? [device.name, device.code, device.location, device.category, device.serial_number]
+            .filter(Boolean)
             .join(' ')
             .toLowerCase()
             .includes(keyword)
@@ -147,6 +86,32 @@ export class DevicesComponent {
       return matchesKeyword && matchesStatus;
     });
   });
+
+  private loadDevices(): void {
+    this.loading.set(true);
+    this.error.set(null);
+
+    const value = this.filterState();
+    const params: any = {};
+    if (value.search && value.search.trim()) {
+      params.q = value.search.trim();
+    }
+    if (value.status && value.status !== 'all') {
+      params.status = value.status;
+    }
+
+    this.deviceService.getDevices(params).pipe(
+      catchError(err => {
+        console.error('Failed to load devices:', err);
+        this.error.set('Failed to load devices');
+        this.snackBar.open('ไม่สามารถโหลดข้อมูลอุปกรณ์ได้', 'ปิด', { duration: 3000 });
+        return of([]);
+      })
+    ).subscribe(devices => {
+      this.devices.set(devices);
+      this.loading.set(false);
+    });
+  }
 
   protected readonly statusOptions: { value: DeviceStatus; label: string }[] = [
     { value: 'ready', label: 'พร้อมใช้งาน' },
@@ -171,8 +136,33 @@ export class DevicesComponent {
     }
   }
 
-  protected trackById(_index: number, item: DeviceItem): string {
+  protected trackById(_index: number, item: Device): number {
     return item.id;
+  }
+
+  // Refresh devices list
+  private refreshDevices(): void {
+    this.loadDevices();
+  }
+
+  // Watch for filter changes
+  protected onFilterChange(): void {
+    // Debounce filter changes
+    setTimeout(() => {
+      this.loadDevices();
+    }, 300);
+  }
+
+  // Show QR Code dialog
+  protected showQRCode(device: Device): void {
+    this.dialog.open(QrDialogComponent, {
+      width: '400px',
+      data: {
+        deviceCode: device.code,
+        deviceName: device.name,
+        deviceStatus: this.statusLabel(device.status)
+      }
+    });
   }
 
   protected addDevice(): void {
@@ -186,19 +176,20 @@ export class DevicesComponent {
         return;
       }
 
-      const newDevice: DeviceItem = {
-        ...result,
-        id: result.code,
-        attachments: [],
-        addedAt: formatDate(new Date(), 'yyyy-MM-dd', 'th'),
-      };
-
-      this.devices.update((current) => [newDevice, ...current]);
-      this.snackBar.open('เพิ่มเครื่องมือแพทย์เรียบร้อยแล้ว', undefined, { duration: 2500 });
+      this.deviceService.createDevice(result).subscribe({
+        next: (newDevice) => {
+          this.devices.update((current) => [newDevice, ...current]);
+          this.snackBar.open('เพิ่มเครื่องมือแพทย์เรียบร้อยแล้ว', undefined, { duration: 2500 });
+        },
+        error: (err) => {
+          console.error('Failed to create device:', err);
+          this.snackBar.open('ไม่สามารถเพิ่มเครื่องมือแพทย์ได้', 'ปิด', { duration: 3000 });
+        }
+      });
     });
   }
 
-  protected editDevice(device: DeviceItem): void {
+  protected editDevice(device: Device): void {
     const dialogRef = this.dialog.open(DeviceFormDialogComponent, {
       width: '520px',
       data: { mode: 'edit' as const, device },
@@ -209,32 +200,58 @@ export class DevicesComponent {
         return;
       }
 
-      this.devices.update((items) =>
-        items.map((item) =>
-          item.id === device.id ? { ...item, ...result, attachments: item.attachments } : item
-        )
-      );
-      this.snackBar.open('อัปเดตข้อมูลเครื่องมือเรียบร้อยแล้ว', undefined, { duration: 2500 });
+      this.deviceService.updateDevice(device.id, result).subscribe({
+        next: (updatedDevice) => {
+          this.devices.update((items) =>
+            items.map((item) =>
+              item.id === device.id ? updatedDevice : item
+            )
+          );
+          this.snackBar.open('อัปเดตข้อมูลเครื่องมือเรียบร้อยแล้ว', undefined, { duration: 2500 });
+        },
+        error: (err) => {
+          console.error('Failed to update device:', err);
+          this.snackBar.open('ไม่สามารถอัปเดตข้อมูลเครื่องมือได้', 'ปิด', { duration: 3000 });
+        }
+      });
     });
   }
 
-  protected deleteDevice(device: DeviceItem): void {
-    this.devices.update((items) => items.filter((item) => item.id !== device.id));
-    this.snackBar.open(`ลบ ${device.name} แล้ว`, undefined, { duration: 2000 });
+  protected deleteDevice(device: Device): void {
+    if (confirm(`คุณต้องการลบ "${device.name}" ใช่หรือไม่?`)) {
+      this.deviceService.deleteDevice(device.id).subscribe({
+        next: () => {
+          this.devices.update((items) => items.filter((item) => item.id !== device.id));
+          this.snackBar.open(`ลบ ${device.name} แล้ว`, undefined, { duration: 2000 });
+        },
+        error: (err) => {
+          console.error('Failed to delete device:', err);
+          this.snackBar.open('ไม่สามารถลบเครื่องมือได้', 'ปิด', { duration: 3000 });
+        }
+      });
+    }
   }
 
-  protected viewDetail(device: DeviceItem): void {
+  protected viewDetail(device: Device): void {
     const dialogRef = this.dialog.open(DeviceDetailDialogComponent, {
       width: '640px',
       data: device,
     });
 
-    dialogRef.afterClosed().subscribe((result?: Partial<DeviceItem>) => {
+    dialogRef.afterClosed().subscribe((result?: Partial<Device>) => {
       if (result?.status) {
-        this.devices.update((items) =>
-          items.map((item) => (item.id === device.id ? { ...item, status: result.status! } : item))
-        );
-        this.snackBar.open('อัปเดตสถานะเครื่องมือแล้ว', undefined, { duration: 2500 });
+        this.deviceService.updateDevice(device.id, { status: result.status }).subscribe({
+          next: (updatedDevice) => {
+            this.devices.update((items) =>
+              items.map((item) => (item.id === device.id ? updatedDevice : item))
+            );
+            this.snackBar.open('อัปเดตสถานะเครื่องมือแล้ว', undefined, { duration: 2500 });
+          },
+          error: (err) => {
+            console.error('Failed to update device status:', err);
+            this.snackBar.open('ไม่สามารถอัปเดตสถานะเครื่องมือได้', 'ปิด', { duration: 3000 });
+          }
+        });
       }
     });
   }
